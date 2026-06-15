@@ -87,7 +87,7 @@ export default function Dashboard() {
                   tickFormatter={(v) => `R$${(v / 1000).toFixed(1)}k`}
                 />
                 <Tooltip
-                  formatter={(value: number) => [fmt(value)]}
+                  formatter={(value) => [fmt(Number(value))]}
                   contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: 8 }}
                   labelStyle={{ color: '#f1f5f9', fontSize: 12 }}
                 />
