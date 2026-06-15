@@ -11,7 +11,6 @@ router.post("/login", authLimiter, authController.login);
 
 router.get(
   "/google",
-  authLimiter,
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 

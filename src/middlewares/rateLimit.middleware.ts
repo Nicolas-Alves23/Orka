@@ -4,9 +4,9 @@ interface RateLimitStore {
   [key: string]: { count: number; resetTime: number };
 }
 
-const store: RateLimitStore = {};
-
 export function rateLimit(options: { windowMs: number; max: number; message?: string }) {
+  const store: RateLimitStore = {};
+
   return (req: Request, res: Response, next: NextFunction) => {
     const key = req.ip || "unknown";
     const now = Date.now();

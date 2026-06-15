@@ -18,7 +18,7 @@ const app = express();
 app.use(helmet());
 app.use(cors({
   origin: env.NODE_ENV === "production"
-    ? ["https://financeia.vercel.app"] // seu domínio no Vercel
+    ? [env.FRONTEND_URL]
     : ["http://localhost:5173", "http://localhost:3000"],
   credentials: true,
 }));

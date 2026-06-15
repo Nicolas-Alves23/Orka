@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import Groq from "groq-sdk";
 import { eq } from "drizzle-orm";
 import { db } from "../../db";
 import { aiRecommendations, financialProfiles } from "../../db/schema";
@@ -7,7 +7,7 @@ import { calculateBudgetDivision } from "../finance/finance.service";
 import { NotFoundError } from "../../utils/errors";
 import { env } from "../../config/env";
 
-const anthropic = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+const groq = new Groq({ apiKey: env.GROQ_API_KEY });
 
 interface AIRecommendationResult {
   budgetDivision: ReturnType<typeof calculateBudgetDivision>;
@@ -58,13 +58,13 @@ Dê insights específicos sobre o objetivo "${mainGoal}" e como os investimentos
 Seja direto, prático e motivador. Não use markdown.
   `.trim();
 
-  const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+  const completion = await groq.chat.completions.create({
+    model: "llama-3.1-8b-instant",
     max_tokens: 600,
     messages: [{ role: "user", content: prompt }],
   });
 
-  const aiSummary = (message.content[0] as { text: string }).text;
+  const aiSummary = completion.choices[0].message.content ?? "";
 
   // Salva no banco
   await db.insert(aiRecommendations).values({

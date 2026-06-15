@@ -1,5 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { useAuth } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Login from './pages/Login'
@@ -8,9 +10,22 @@ import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Recommendation from './pages/Recommendation'
 
-// Captura o token vindo do callback do Google SSO antes de redirecionar
 function AuthCallback() {
-  return <Navigate to="/" replace />
+  const { loginWithToken } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('token')
+    if (token) loginWithToken(token)
+    navigate('/', { replace: true })
+  }, [])
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-950">
+      <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  )
 }
 
 export default function App() {

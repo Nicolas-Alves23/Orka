@@ -12,6 +12,7 @@ interface AuthContextType {
   token: string | null
   login: (email: string, password: string) => Promise<void>
   register: (name: string, email: string, password: string) => Promise<void>
+  loginWithToken: (token: string) => void
   logout: () => void
   isLoading: boolean
 }
@@ -33,16 +34,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false)
   }, [])
 
-  // Captura token vindo do callback do Google SSO
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const callbackToken = params.get('token')
-    if (callbackToken) {
-      setToken(callbackToken)
-      localStorage.setItem('token', callbackToken)
-      window.history.replaceState({}, '', '/')
-    }
-  }, [])
+  function loginWithToken(t: string) {
+    setToken(t)
+    localStorage.setItem('token', t)
+  }
 
   async function login(email: string, password: string) {
     const { data } = await api.post('/auth/login', { email, password })
@@ -70,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, token, login, register, loginWithToken, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   )
