@@ -1,4 +1,4 @@
-# 💰 FinanceIA — Backend
+# 💰 Orka — Backend
 
 > Backend robusto para gestão financeira inteligente com IA (Claude) + dados reais da bolsa brasileira (BRAPI).
 
