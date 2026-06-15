@@ -32,4 +32,4 @@ export function rateLimit(options: { windowMs: number; max: number; message?: st
 // Rate limits pré-configurados
 export const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 export const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: "Muitas tentativas de login." });
-export const aiLimiter = rateLimit({ windowMs: 60 * 1000, max: 5, message: "Limite de requisições de IA atingido." });
+export const aiLimiter = rateLimit({ windowMs: 60 * 1000, max: 20, message: "Limite de requisições de IA atingido. Tente em instantes." });

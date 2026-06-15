@@ -14,6 +14,9 @@ import aiRoutes from "./modules/ai/ai.routes";
 
 const app = express();
 
+// Necessário para req.ip funcionar corretamente atrás do proxy do Render
+app.set("trust proxy", 1);
+
 // Segurança
 app.use(helmet());
 const allowedOrigins =
