@@ -16,10 +16,19 @@ const app = express();
 
 // Segurança
 app.use(helmet());
-app.use(cors({
-  origin: env.NODE_ENV === "production"
+const allowedOrigins =
+  env.NODE_ENV === "production"
     ? [env.FRONTEND_URL]
-    : ["http://localhost:5173", "http://localhost:3000"],
+    : ["http://localhost:5173", "http://localhost:3000"];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    const allowed =
+      allowedOrigins.includes(origin) ||
+      origin.endsWith(".vercel.app");
+    callback(allowed ? null : new Error("Not allowed by CORS"), allowed);
+  },
   credentials: true,
 }));
 
