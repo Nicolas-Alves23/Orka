@@ -2,7 +2,12 @@ import { Response, NextFunction } from "express";
 import { z } from "zod";
 import { AuthRequest } from "../../middlewares/auth.middleware";
 import * as financeService from "./finance.service";
-import { success } from "../../utils/response";
+import { success, paginated } from "../../utils/response";
+
+const historyQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).optional().default(1),
+  limit: z.coerce.number().int().min(1).max(50).optional().default(10),
+});
 
 const profileSchema = z.object({
   monthlyIncome: z.number().positive("Renda deve ser positiva"),
@@ -46,8 +51,9 @@ export async function getBudgetDivision(req: AuthRequest, res: Response, next: N
 
 export async function getHistory(req: AuthRequest, res: Response, next: NextFunction) {
   try {
-    const history = await financeService.getRecommendationHistory(req.user!.userId);
-    success(res, history);
+    const { page, limit } = historyQuerySchema.parse(req.query);
+    const { items, total } = await financeService.getRecommendationHistory(req.user!.userId, page, limit);
+    paginated(res, items, { page, limit, total });
   } catch (err) {
     next(err);
   }

@@ -10,6 +10,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
@@ -23,46 +24,46 @@ export default function Login() {
       setLoading(false)
     }
   }
-
+ 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-white">Orka</h1>
-          <p className="text-slate-400 mt-1 text-sm">Gestão financeira inteligente</p>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Orka</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">Gestão financeira inteligente</p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl p-6 space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm text-slate-300 mb-1.5">E-mail</label>
+              <label className="block text-sm text-slate-600 dark:text-slate-300 mb-1.5">E-mail</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors"
+                className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors"
                 placeholder="seu@email.com"
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-300 mb-1.5">Senha</label>
+              <label className="block text-sm text-slate-600 dark:text-slate-300 mb-1.5">Senha</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors"
+                className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors"
                 placeholder="••••••••"
               />
             </div>
 
-            {error && <p className="text-red-400 text-sm">{error}</p>}
+            {error && <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-lg py-2 text-sm font-medium transition-colors"
+              className="w-full bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-lg py-2 text-sm font-medium transition-colors dark:shadow-[0_0_20px_rgba(139,92,246,0.25)]"
             >
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
@@ -70,25 +71,25 @@ export default function Login() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-700" />
+              <div className="w-full border-t border-slate-200 dark:border-slate-700" />
             </div>
-            <div className="relative flex justify-center text-xs text-slate-500">
-              <span className="bg-slate-900 px-2">ou</span>
+            <div className="relative flex justify-center text-xs text-slate-500 dark:text-slate-500">
+              <span className="bg-white dark:bg-slate-900 px-2">ou</span>
             </div>
           </div>
 
           <a
             href={`${import.meta.env.VITE_BACKEND_URL ?? ''}/api/auth/google`}
-            className="flex items-center justify-center gap-2 w-full border border-slate-700 hover:border-slate-600 rounded-lg py-2 text-sm text-slate-300 hover:text-white transition-colors"
+            className="flex items-center justify-center gap-2 w-full border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 rounded-lg py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
             <GoogleIcon />
             Entrar com Google
           </a>
         </div>
 
-        <p className="text-center mt-4 text-sm text-slate-400">
+        <p className="text-center mt-4 text-sm text-slate-500 dark:text-slate-400">
           Não tem conta?{' '}
-          <Link to="/register" className="text-violet-400 hover:text-violet-300">
+          <Link to="/register" className="text-violet-600 dark:text-violet-300 hover:text-violet-700 dark:hover:text-violet-200">
             Criar conta
           </Link>
         </p>

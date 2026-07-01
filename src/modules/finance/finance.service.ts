@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { count, eq, desc } from "drizzle-orm";
 import { db } from "../../db";
 import { financialProfiles, aiRecommendations } from "../../db/schema";
 import { NotFoundError } from "../../utils/errors";
@@ -79,10 +79,19 @@ export function calculateBudgetDivision(income: number, expenses: number = 0) {
   };
 }
 
-export async function getRecommendationHistory(userId: string) {
-  return db.query.aiRecommendations.findMany({
-    where: eq(aiRecommendations.userId, userId),
-    orderBy: [desc(aiRecommendations.createdAt)],
-    limit: 10,
-  });
+export async function getRecommendationHistory(userId: string, page: number, limit: number) {
+  const [items, [{ total }]] = await Promise.all([
+    db.query.aiRecommendations.findMany({
+      where: eq(aiRecommendations.userId, userId),
+      orderBy: [desc(aiRecommendations.createdAt)],
+      limit,
+      offset: (page - 1) * limit,
+    }),
+    db
+      .select({ total: count() })
+      .from(aiRecommendations)
+      .where(eq(aiRecommendations.userId, userId)),
+  ]);
+
+  return { items, total };
 }
